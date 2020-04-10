@@ -1,14 +1,13 @@
 const express = require('express');
+const server = express();
 
 const projectsRouter = require('./routers/projects');
 const actionsRouter = require('./routers/actions');
-const server = express();
-
 
 server.use(express.json());
 
-server.use('/api/projects', projectsRouter);
-server.use('/api/actions', actionsRouter); 
+server.use('/projects', projectsRouter);
+server.use('/actions', actionsRouter); 
 
 server.get('/', (req, res) => {
     res.send(`Leave me alone, I'm working`);
