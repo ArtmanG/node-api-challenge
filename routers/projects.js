@@ -37,26 +37,25 @@ router.get('/:id/actions', (req, res) => {
 
 //POSTs
 
-router.post('/:id', (req, res) => {
-    Projects.insert()
-    .then(a => {
-
+router.post('/', (req, res) => {
+    Projects.insert(req.body)
+    .then(project => {
+        res.status(201).json(project)
     })
     .catch(error => {
-        
+        res.status(500).json({ message: 'Internal Server Error', error})
     })
 });
-
 
 //PUTs
 
 router.put('/:id', (req, res) => {
-    Projects.update()
-    .then(a => {
-
+    Projects.update(req.params.id, req.body)
+    .then(update => {
+        res.status(201).json(update)
     })
     .catch(error => {
-        
+        res.status(500).json({ message: 'Internal Server Error', error})
     })
 });
 
@@ -64,12 +63,16 @@ router.put('/:id', (req, res) => {
 //DELETEs
 
 router.delete('/:id', (req, res) => {
-    Projects.remove()
-    .then(a => {
-
+    Projects.remove(req.params.id)
+    .then(count => {
+        if (count > 0) {
+            res.status(200).json({ message: "Project has been destroyed." })
+        } else {
+            res.status(404).json({ message: "No project to delete at this ID" })
+        }
     })
     .catch(error => {
-        
+        res.status(500).json({ message: 'Internal Server Error', error})
     })
 });
 
